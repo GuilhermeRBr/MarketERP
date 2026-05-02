@@ -20,19 +20,19 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center bg-[#d5dce5]">
+      <div className="w-full max-w-md px-4">
         {/* Card de Login */}
-        <div className="bg-white rounded-2xl shadow-xl p-8">
+        <div className="bg-white rounded-2xl shadow-2xl p-10">
           {/* Logo e Título */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full mb-4">
-              <LogIn className="w-8 h-8 text-white" />
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-[#2563eb] rounded-full mb-6">
+              <LogIn className="w-10 h-10 text-white" />
             </div>
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">
+            <h1 className="text-4xl font-bold text-gray-900 mb-3">
               Mercadinho GR
             </h1>
-            <p className="text-gray-600">Faça login para continuar</p>
+            <p className="text-gray-500 text-base">Faça login para continuar</p>
           </div>
 
           {/* Erro */}
@@ -49,7 +49,7 @@ export default function LoginPage() {
           )}
 
           {/* Formulário */}
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-5">
             {/* Email */}
             <div>
               <label
@@ -64,8 +64,8 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="seu@email.com"
+                className="w-full px-4 py-3.5 bg-[#e8edf3] border-0 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 placeholder:text-gray-500"
+                placeholder="emailowner@example.com"
                 disabled={isLoading}
               />
             </div>
@@ -86,7 +86,7 @@ export default function LoginPage() {
                 required
                 minLength={8}
                 maxLength={16}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-3.5 bg-[#e8edf3] border-0 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 placeholder:text-gray-500"
                 placeholder="••••••••"
                 disabled={isLoading}
               />
@@ -96,7 +96,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:bg-blue-400 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="w-full bg-[#2563eb] text-white py-3.5 rounded-lg font-medium hover:bg-[#1d4ed8] transition-colors disabled:bg-blue-400 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-6"
             >
               {isLoading ? (
                 <>
@@ -113,16 +113,19 @@ export default function LoginPage() {
           </form>
 
           {/* Credenciais de Teste */}
-          <div className="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <p className="text-sm font-medium text-blue-900 mb-2">
-              🔐 Credenciais de Teste
+          <div className="mt-8 p-4 bg-[#e8f0fe] border border-[#c5d9f5] rounded-lg">
+            <p className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+              <span className="text-lg">🔐</span>
+              Credenciais de Teste
             </p>
-            <div className="text-xs text-blue-800 space-y-1">
+            <div className="text-sm text-gray-700 space-y-1">
               <p>
-                <strong>Email:</strong> emailowner@example.com
+                <span className="font-semibold text-[#2563eb]">Email:</span>{" "}
+                <span className="text-[#2563eb]">emailowner@example.com</span>
               </p>
               <p>
-                <strong>Senha:</strong> Owner@123
+                <span className="font-semibold text-[#2563eb]">Senha:</span>{" "}
+                <span className="text-[#2563eb]">Owner@123</span>
               </p>
             </div>
           </div>
@@ -133,7 +136,7 @@ export default function LoginPage() {
               Não tem uma conta?{" "}
               <Link
                 href="/register"
-                className="text-blue-600 hover:text-blue-700 font-medium"
+                className="text-[#2563eb] hover:text-[#1d4ed8] font-medium"
               >
                 Criar conta
               </Link>
@@ -142,7 +145,7 @@ export default function LoginPage() {
         </div>
 
         {/* Footer */}
-        <p className="text-center text-sm text-gray-600 mt-6">
+        <p className="text-center text-sm text-gray-500 mt-8">
           Sistema de Gerenciamento v1.0.0
         </p>
       </div>
