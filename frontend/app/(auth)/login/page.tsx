@@ -65,7 +65,7 @@ export default function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 className="w-full px-4 py-3.5 bg-[#e8edf3] border-0 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 placeholder:text-gray-500"
-                placeholder="emailowner@example.com"
+                placeholder="seu@email.com"
                 disabled={isLoading}
               />
             </div>
@@ -111,24 +111,6 @@ export default function LoginPage() {
               )}
             </button>
           </form>
-
-          {/* Credenciais de Teste */}
-          <div className="mt-8 p-4 bg-[#e8f0fe] border border-[#c5d9f5] rounded-lg">
-            <p className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-lg">🔐</span>
-              Credenciais de Teste
-            </p>
-            <div className="text-sm text-gray-700 space-y-1">
-              <p>
-                <span className="font-semibold text-[#2563eb]">Email:</span>{" "}
-                <span className="text-[#2563eb]">emailowner@example.com</span>
-              </p>
-              <p>
-                <span className="font-semibold text-[#2563eb]">Senha:</span>{" "}
-                <span className="text-[#2563eb]">Owner@123</span>
-              </p>
-            </div>
-          </div>
 
           {/* Link para Cadastro */}
           <div className="mt-6 text-center">
