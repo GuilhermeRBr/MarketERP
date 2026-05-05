@@ -114,10 +114,7 @@ npm run dev
 
 Após iniciar o backend:
 - **Swagger UI**: http://localhost:8000/docs
-- **ReDoc**: http://localhost:8000/redoc
-
-## 🐛 Solução de Problemas
-
+- **ReDoc**: http://localhost:8000/docs
 
 ## 🤝 Contribuindo
 
