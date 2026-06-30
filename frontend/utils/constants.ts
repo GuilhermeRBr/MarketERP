@@ -2,7 +2,7 @@
 export const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
 
 // App Configuration
-export const APP_NAME = "Mercadinho GR";
+export const APP_NAME = "MarketERP";
 export const APP_VERSION = "1.0.0";
 
 // Pagination

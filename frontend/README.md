@@ -1,4 +1,4 @@
-# Mercadinho GR - Frontend
+# MarketERP - Frontend
 
 Frontend moderno desenvolvido com Next.js, TypeScript e Tailwind CSS.
 

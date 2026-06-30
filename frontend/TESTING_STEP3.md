@@ -259,7 +259,7 @@ Este teste requer modificar o tempo de expiração do token no backend ou espera
 
 ### Verificar Elementos:
 - ✅ Logo azul com ícone
-- ✅ Título "Mercadinho GR"
+- ✅ Título "MarketERP"
 - ✅ Subtítulo "Faça login para continuar"
 - ✅ Campo de email
 - ✅ Campo de senha

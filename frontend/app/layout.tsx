@@ -7,8 +7,8 @@ import { AuthProvider } from "@/contexts/AuthContext";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Mercadinho GR",
-  description: "Sistema de gerenciamento para Mercadinho GR",
+  title: "MarketERP",
+  description: "Sistema de gerenciamento para MarketERP",
 };
 
 export default function RootLayout({

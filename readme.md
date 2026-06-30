@@ -1,11 +1,11 @@
-# 🛒 Mercadinho GR
+# 🛒 MarketERP
 
 Sistema completo de gerenciamento para pequenos mercados e mercearias.
 
 ## 📁 Estrutura do Projeto
 
 ```
-MercadinhoGR/
+MarketERP/
 ├── backend/              # API REST (FastAPI + Python)
 │   ├── src/             # Código fonte
 │   ├── tests/           # Testes

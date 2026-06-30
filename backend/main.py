@@ -15,8 +15,8 @@ from src.data.database import SessionLocal
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(
-    title="Mercadinho GR",
-    description="API para gerenciamento de produtos e vendas no Mercadinho GR",
+    title="MarketERP",
+    description="API para gerenciamento de produtos e vendas no MarketERP",
     version="1.0.0",
 )
 
