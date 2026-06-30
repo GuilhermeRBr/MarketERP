@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
 import { LogIn, Loader2, AlertCircle } from "lucide-react";
 
@@ -111,19 +110,6 @@ export default function LoginPage() {
               )}
             </button>
           </form>
-
-          {/* Link para Cadastro */}
-          <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600">
-              Não tem uma conta?{" "}
-              <Link
-                href="/register"
-                className="text-[#2563eb] hover:text-[#1d4ed8] font-medium"
-              >
-                Criar conta
-              </Link>
-            </p>
-          </div>
         </div>
 
         {/* Footer */}
