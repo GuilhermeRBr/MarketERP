@@ -67,7 +67,7 @@ class ProductResponse(BaseModel):
     name: str
     price: float
     stock: int
-    barcode: str
+    barcode: Optional[str] = None
     active: bool
 
     model_config = ConfigDict(from_attributes=True)

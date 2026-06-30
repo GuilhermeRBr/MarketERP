@@ -9,5 +9,5 @@ class Product(Base):
     name = Column(String, nullable=False, unique=True)
     price = Column(Numeric(10, 2), nullable=False)
     stock = Column(Integer, default=0)
-    barcode = Column(String, nullable=False, unique=True)
+    barcode = Column(String, nullable=True, unique=True)
     active = Column(Boolean, default=True)

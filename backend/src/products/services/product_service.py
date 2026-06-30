@@ -19,7 +19,8 @@ class ProductService:
             )
 
         if (
-            db.query(Product)
+            data.barcode is not None
+            and db.query(Product)
             .filter(Product.barcode == data.barcode)
             .first()
         ):
