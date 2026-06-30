@@ -1,4 +1,4 @@
-# 🚀 Guia de Instalação - Frontend Mercadinho GR
+# 🚀 Guia de Instalação - Frontend MarketERP
 
 ## Pré-requisitos
 

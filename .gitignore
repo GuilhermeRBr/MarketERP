@@ -6,3 +6,4 @@
 env.py
 venv/
 docs/
+.vscode/

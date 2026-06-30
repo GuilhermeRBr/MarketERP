@@ -30,7 +30,7 @@ export default function LoginPage() {
               <LogIn className="w-10 h-10 text-white" />
             </div>
             <h1 className="text-4xl font-bold text-gray-900 mb-3">
-              Mercadinho GR
+              MarketERP
             </h1>
             <p className="text-gray-500 text-base">Faça login para continuar</p>
           </div>
