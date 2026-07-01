@@ -7,12 +7,14 @@ import { Loader2, Package, Plus, AlertCircle } from "lucide-react";
 import ProductTable from "@/components/produtos/ProductTable";
 import ProductFilters from "@/components/produtos/ProductFilters";
 import ProductForm from "@/components/produtos/ProductForm";
+import { ConfirmModal } from "@/components/ui/ConfirmModal";
 
 export default function ProdutosPage() {
   const [showForm, setShowForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeFilter, setActiveFilter] = useState<boolean | undefined>(undefined);
+  const [productToToggle, setProductToToggle] = useState<Product | null>(null);
 
   // Queries
   const { data: products, isLoading, error } = useProducts();
@@ -76,18 +78,23 @@ export default function ProdutosPage() {
     }
   };
 
-  const handleToggleActive = async (product: Product) => {
-    const action = product.active ? "desativar" : "ativar";
-    if (confirm(`Deseja ${action} o produto "${product.name}"?`)) {
-      try {
-        if (product.active) {
-          await deactivateMutation.mutateAsync(product.id);
-        } else {
-          await activateMutation.mutateAsync(product.id);
-        }
-      } catch (err) {
-        console.error(`Erro ao ${action} produto:`, err);
+  const handleToggleActive = (product: Product) => {
+    setProductToToggle(product);
+  };
+
+  const handleConfirmToggle = async () => {
+    if (!productToToggle) return;
+
+    const action = productToToggle.active ? "desativar" : "ativar";
+    try {
+      if (productToToggle.active) {
+        await deactivateMutation.mutateAsync(productToToggle.id);
+      } else {
+        await activateMutation.mutateAsync(productToToggle.id);
       }
+      setProductToToggle(null);
+    } catch (err) {
+      console.error(`Erro ao ${action} produto:`, err);
     }
   };
 
@@ -205,6 +212,28 @@ export default function ProdutosPage() {
           )}
         </div>
       )}
+
+      {/* Modal de confirmação ativar/desativar */}
+      <ConfirmModal
+        isOpen={!!productToToggle}
+        variant={productToToggle?.active ? "danger" : "success"}
+        title={
+          productToToggle?.active ? "Desativar produto" : "Ativar produto"
+        }
+        message={
+          <>
+            Deseja {productToToggle?.active ? "desativar" : "ativar"} o produto{" "}
+            <span className="font-semibold text-gray-900">
+              &quot;{productToToggle?.name}&quot;
+            </span>
+            ?
+          </>
+        }
+        confirmLabel={productToToggle?.active ? "Desativar" : "Ativar"}
+        isLoading={deactivateMutation.isPending || activateMutation.isPending}
+        onConfirm={handleConfirmToggle}
+        onClose={() => setProductToToggle(null)}
+      />
     </div>
   );
 }
