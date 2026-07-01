@@ -91,10 +91,6 @@ class SalesService:
             )
 
         sales = db.query(Sale).all()
-        if not sales:
-            raise HTTPException(
-                status_code=404, detail=SalesMessages.SALES_NOT_FOUND
-            )
         return sales
 
     @staticmethod

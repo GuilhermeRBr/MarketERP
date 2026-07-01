@@ -12,9 +12,13 @@ import { CreateUserDTO, UserListResponse } from "@/types/User";
 import { Loader2, Users as UsersIcon, Plus, AlertCircle } from "lucide-react";
 import UserTable from "@/components/usuarios/UserTable";
 import UserForm from "@/components/usuarios/UserForm";
+import { ConfirmModal } from "@/components/ui/ConfirmModal";
 
 export default function UsuariosPage() {
   const [showForm, setShowForm] = useState(false);
+  const [userToToggle, setUserToToggle] = useState<UserListResponse | null>(
+    null
+  );
   const { user: currentUser } = useAuth();
 
   // Queries
@@ -43,24 +47,29 @@ export default function UsuariosPage() {
     }
   };
 
-  const handleToggleActive = async (user: UserListResponse) => {
+  const handleToggleActive = (user: UserListResponse) => {
     // Não permitir desativar o próprio usuário
     if (user.id === currentUser?.id) {
       alert("Você não pode desativar sua própria conta!");
       return;
     }
 
-    const action = user.active ? "desativar" : "ativar";
-    if (confirm(`Deseja ${action} o usuário "${user.email}"?`)) {
-      try {
-        if (user.active) {
-          await deactivateMutation.mutateAsync(user.id);
-        } else {
-          await activateMutation.mutateAsync(user.id);
-        }
-      } catch (err) {
-        console.error(`Erro ao ${action} usuário:`, err);
+    setUserToToggle(user);
+  };
+
+  const handleConfirmToggle = async () => {
+    if (!userToToggle) return;
+
+    const action = userToToggle.active ? "desativar" : "ativar";
+    try {
+      if (userToToggle.active) {
+        await deactivateMutation.mutateAsync(userToToggle.id);
+      } else {
+        await activateMutation.mutateAsync(userToToggle.id);
       }
+      setUserToToggle(null);
+    } catch (err) {
+      console.error(`Erro ao ${action} usuário:`, err);
     }
   };
 
@@ -162,6 +171,26 @@ export default function UsuariosPage() {
           )}
         </div>
       )}
+
+      {/* Modal de confirmação ativar/desativar */}
+      <ConfirmModal
+        isOpen={!!userToToggle}
+        variant={userToToggle?.active ? "danger" : "success"}
+        title={userToToggle?.active ? "Desativar usuário" : "Ativar usuário"}
+        message={
+          <>
+            Deseja {userToToggle?.active ? "desativar" : "ativar"} o usuário{" "}
+            <span className="font-semibold text-gray-900">
+              &quot;{userToToggle?.email}&quot;
+            </span>
+            ?
+          </>
+        }
+        confirmLabel={userToToggle?.active ? "Desativar" : "Ativar"}
+        isLoading={deactivateMutation.isPending || activateMutation.isPending}
+        onConfirm={handleConfirmToggle}
+        onClose={() => setUserToToggle(null)}
+      />
     </div>
   );
 }

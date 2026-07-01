@@ -6,29 +6,30 @@ import { Sale } from "@/types/Sale";
 import { Loader2, ShoppingCart, AlertCircle, Plus } from "lucide-react";
 import { formatCurrency, formatDateTime } from "@/utils/formatters";
 import Link from "next/link";
+import { ConfirmModal } from "@/components/ui/ConfirmModal";
 
 export default function VendasPage() {
   const { data: sales, isLoading, error } = useSales();
   const cancelMutation = useCancelSale();
+  const [saleToCancel, setSaleToCancel] = useState<Sale | null>(null);
 
-  const handleCancel = async (sale: Sale) => {
+  const handleCancel = (sale: Sale) => {
     if (sale.status === "cancelled") {
       alert("Esta venda já está cancelada!");
       return;
     }
 
-    if (
-      confirm(
-        `Deseja cancelar a venda #${sale.id} no valor de ${formatCurrency(
-          sale.total
-        )}?`
-      )
-    ) {
-      try {
-        await cancelMutation.mutateAsync(sale.id);
-      } catch (err) {
-        console.error("Erro ao cancelar venda:", err);
-      }
+    setSaleToCancel(sale);
+  };
+
+  const handleConfirmCancel = async () => {
+    if (!saleToCancel) return;
+
+    try {
+      await cancelMutation.mutateAsync(saleToCancel.id);
+      setSaleToCancel(null);
+    } catch (err) {
+      console.error("Erro ao cancelar venda:", err);
     }
   };
 
@@ -176,6 +177,31 @@ export default function VendasPage() {
           )}
         </div>
       )}
+
+      {/* Modal de confirmação de cancelamento */}
+      <ConfirmModal
+        isOpen={!!saleToCancel}
+        variant="danger"
+        title="Cancelar venda"
+        message={
+          <>
+            Deseja cancelar a venda{" "}
+            <span className="font-semibold text-gray-900">
+              #{saleToCancel?.id}
+            </span>{" "}
+            no valor de{" "}
+            <span className="font-semibold text-gray-900">
+              {saleToCancel ? formatCurrency(saleToCancel.total) : ""}
+            </span>
+            ?
+          </>
+        }
+        confirmLabel="Cancelar venda"
+        cancelLabel="Voltar"
+        isLoading={cancelMutation.isPending}
+        onConfirm={handleConfirmCancel}
+        onClose={() => setSaleToCancel(null)}
+      />
     </div>
   );
 }

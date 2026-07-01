@@ -55,11 +55,6 @@ class ProductService:
     @staticmethod
     def list_products(db: Session):
         products = db.query(Product).all()
-        if not products:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=ProductMessages.NO_PRODUCTS_FOUND,
-            )
         return [
             ProductResponse.model_validate(product)
             for product in products
