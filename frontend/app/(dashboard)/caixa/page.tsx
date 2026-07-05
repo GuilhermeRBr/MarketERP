@@ -6,6 +6,7 @@ import { useCreateSale } from "@/hooks/useSales";
 import { useCreatePayment } from "@/hooks/usePayments";
 import { Product } from "@/types/Product";
 import { PaymentModal, PaymentLine } from "@/components/caixa/PaymentModal";
+import { SaleSuccessModal } from "@/components/caixa/SaleSuccessModal";
 import { Search, ShoppingCart, Trash2, Plus, Minus, CreditCard, Tag } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -23,6 +24,8 @@ export default function CaixaPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [isProcessingSale, setIsProcessingSale] = useState(false);
+  const [isSaleSuccessOpen, setIsSaleSuccessOpen] = useState(false);
+  const [lastSaleTotal, setLastSaleTotal] = useState(0);
 
   const searchInputRef = useRef<HTMLInputElement>(null);
 
@@ -136,9 +139,10 @@ export default function CaixaPage() {
 
       await Promise.all(paymentPromises);
 
-      toast.success("Venda finalizada com sucesso!");
+      setLastSaleTotal(totalAmount);
       setIsPaymentModalOpen(false);
       clearCart();
+      setIsSaleSuccessOpen(true);
     } catch (error) {
       console.error("Error finalizing sale:", error);
       toast.error("Erro ao finalizar a venda. Tente novamente.");
@@ -332,6 +336,12 @@ export default function CaixaPage() {
         totalAmount={totalAmount}
         onConfirm={handleFinalizeSale}
         isLoading={isProcessingSale}
+      />
+
+      <SaleSuccessModal
+        isOpen={isSaleSuccessOpen}
+        onClose={() => setIsSaleSuccessOpen(false)}
+        totalAmount={lastSaleTotal}
       />
     </div>
   );
