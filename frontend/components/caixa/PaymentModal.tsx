@@ -43,17 +43,19 @@ export function PaymentModal({
     }
   }, [isOpen, totalAmount]);
 
-  if (!isOpen) return null;
-
+  // Update the currentAmount to the remaining amount automatically
+  // Must be before the early return to follow Rules of Hooks
   const totalPaid = payments.reduce((acc, curr) => acc + curr.amount, 0);
   const remaining = Math.max(0, totalAmount - totalPaid);
-  
-  // Update the currentAmount to the remaining amount automatically
+
   useEffect(() => {
+    if (!isOpen) return;
     if (remaining > 0 && payments.length > 0) {
       setCurrentAmount(remaining.toFixed(2));
     }
-  }, [payments, remaining]);
+  }, [isOpen, payments, remaining]);
+
+  if (!isOpen) return null;
 
   const handleAddPayment = () => {
     const amountVal = parseFloat(currentAmount);
