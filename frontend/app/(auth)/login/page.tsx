@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { LogIn, Loader2, AlertCircle } from "lucide-react";
+import { Logo } from "@/components/layout/Logo";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -24,13 +25,8 @@ export default function LoginPage() {
         {/* Card de Login */}
         <div className="bg-white rounded-2xl shadow-2xl p-10">
           {/* Logo e Título */}
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-[#2563eb] rounded-full mb-6">
-              <LogIn className="w-10 h-10 text-white" />
-            </div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-3">
-              MarketERP
-            </h1>
+          <div className="flex flex-col items-center mb-8">
+            <Logo width={220} className="mb-3" />
             <p className="text-gray-500 text-base">Faça login para continuar</p>
           </div>
 
