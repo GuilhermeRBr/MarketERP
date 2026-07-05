@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 import {
   LayoutDashboard,
   Package,
@@ -12,6 +13,8 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { MonitorPlay } from "lucide-react";
+import { Logo } from "@/components/layout/Logo";
+import { ConfirmModal } from "@/components/common/ConfirmModal";
 
 const menuItems = [
   {
@@ -44,19 +47,23 @@ const menuItems = [
 export default function Sidebar() {
   const pathname = usePathname();
   const { logout } = useAuth();
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
-  const handleLogout = async () => {
-    if (confirm("Deseja realmente sair?")) {
-      await logout();
-    }
+  const handleLogout = () => {
+    setIsLogoutModalOpen(true);
+  };
+
+  const confirmLogout = async () => {
+    setIsLogoutModalOpen(false);
+    await logout();
   };
 
   return (
     <aside className="w-64 bg-gray-900 text-white min-h-screen flex flex-col">
       {/* Logo */}
       <div className="p-6 border-b border-gray-800">
-        <h1 className="text-2xl font-bold text-blue-400">MarketERP</h1>
-        <p className="text-sm text-gray-400 mt-1">Sistema de Gestão</p>
+        <Logo width={160} marketColor="#ffffff" />
+        <p className="text-sm text-gray-400 mt-2">Sistema de Gestão</p>
       </div>
 
       {/* Menu */}
@@ -95,6 +102,17 @@ export default function Sidebar() {
           <span className="font-medium">Sair</span>
         </button>
       </div>
+
+      <ConfirmModal
+        isOpen={isLogoutModalOpen}
+        title="Sair da aplicação"
+        message="Deseja realmente sair?"
+        confirmLabel="Sair"
+        cancelLabel="Cancelar"
+        variant="danger"
+        onConfirm={confirmLogout}
+        onCancel={() => setIsLogoutModalOpen(false)}
+      />
     </aside>
   );
 }

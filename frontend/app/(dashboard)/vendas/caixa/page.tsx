@@ -10,6 +10,8 @@ import { Product } from "@/types/Product";
 import { PaymentType } from "@/types/Payment";
 import { formatCurrency } from "@/utils/formatters";
 import PaymentMethodSelector from "@/components/pagamentos/PaymentMethodSelector";
+import { SaleSuccessModal } from "@/components/caixa/SaleSuccessModal";
+import toast from "react-hot-toast";
 import {
   ShoppingCart,
   Plus,
@@ -29,6 +31,8 @@ export default function CaixaPage() {
   const [showPayment, setShowPayment] = useState(false);
   const [selectedPaymentMethod, setSelectedPaymentMethod] =
     useState<PaymentType | null>(null);
+  const [isSaleSuccessOpen, setIsSaleSuccessOpen] = useState(false);
+  const [lastSaleTotal, setLastSaleTotal] = useState(0);
 
   const { data: products, isLoading } = useProducts();
   const createSaleMutation = useCreateSale();
@@ -48,7 +52,7 @@ export default function CaixaPage() {
 
     if (existingItem) {
       if (existingItem.quantity >= product.stock) {
-        alert("Estoque insuficiente!");
+        toast.error("Estoque insuficiente!");
         return;
       }
       setCart(
@@ -64,7 +68,7 @@ export default function CaixaPage() {
       );
     } else {
       if (product.stock === 0) {
-        alert("Produto sem estoque!");
+        toast.error("Produto sem estoque!");
         return;
       }
       setCart([
@@ -85,7 +89,7 @@ export default function CaixaPage() {
     const cartItem = cart.find((item) => item.product_id === productId);
 
     if (product && cartItem && cartItem.quantity >= product.stock) {
-      alert("Estoque insuficiente!");
+      toast.error("Estoque insuficiente!");
       return;
     }
 
@@ -124,7 +128,7 @@ export default function CaixaPage() {
 
   const handleContinueToPayment = () => {
     if (cart.length === 0) {
-      alert("Adicione produtos ao carrinho!");
+      toast.error("Adicione produtos ao carrinho!");
       return;
     }
     setShowPayment(true);
@@ -137,7 +141,7 @@ export default function CaixaPage() {
 
   const handleFinalizeSale = async () => {
     if (!selectedPaymentMethod) {
-      alert("Selecione uma forma de pagamento!");
+      toast.error("Selecione uma forma de pagamento!");
       return;
     }
 
@@ -157,18 +161,19 @@ export default function CaixaPage() {
         amount: total,
       });
 
-      alert("Venda realizada com sucesso!");
+      setLastSaleTotal(total);
       setCart([]);
       setShowPayment(false);
       setSelectedPaymentMethod(null);
-      router.push("/vendas");
+      setIsSaleSuccessOpen(true);
     } catch (err) {
       console.error("Erro ao finalizar venda:", err);
-      alert("Erro ao finalizar venda. Tente novamente.");
+      toast.error("Erro ao finalizar venda. Tente novamente.");
     }
   };
 
   return (
+    <>
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       {/* Produtos */}
       {!showPayment && (
@@ -369,5 +374,15 @@ export default function CaixaPage() {
         </div>
       </div>
     </div>
+
+      <SaleSuccessModal
+        isOpen={isSaleSuccessOpen}
+        onClose={() => {
+          setIsSaleSuccessOpen(false);
+          router.push("/vendas");
+        }}
+        totalAmount={lastSaleTotal}
+      />
+    </>
   );
 }
