@@ -26,7 +26,21 @@ def get_current_user(
                 status_code=401, detail="Invalid token"
             )
         user = db.query(User).filter(User.id == int(user_id)).first()
+        if not user:
+            raise HTTPException(
+                status_code=401, detail="Invalid token"
+            )
         return user
 
     except JWTError:
         raise HTTPException(status_code=401, detail="Invalid token")
+
+
+def require_owner(current_user: User = Depends(get_current_user)):
+    """Dependency que garante que apenas owners acessem a rota."""
+    if current_user.role != "OWNER":
+        raise HTTPException(
+            status_code=403,
+            detail="Access denied. Owner role required.",
+        )
+    return current_user

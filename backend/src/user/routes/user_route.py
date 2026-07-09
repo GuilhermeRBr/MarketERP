@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, status, Path
 from sqlalchemy.orm import Session
-from src.core.dependency import get_current_user
+from src.core.dependency import get_current_user, require_owner
 from src.data.database import get_db
 from src.user.models.user_model import User
 from src.user.schemas.user_schema import (
@@ -34,13 +34,14 @@ router = APIRouter(prefix="/users", tags=["Users"])
         },
         400: {"description": CommonMessages.BAD_REQUEST},
         401: {"description": CommonMessages.UNAUTHORIZED},
+        403: {"description": CommonMessages.FORBIDDEN},
         409: {"description": CommonMessages.CONFLICT},
         422: {"description": CommonMessages.UNPROCESSABLE_ENTITY},
     },
 )
 def create_user(
     data: UserCreate,
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_owner),
     db: Session = Depends(get_db),
 ):
     new_user = UserService.create_new_user(db, data, current_user)
@@ -70,11 +71,12 @@ def create_user(
         },
         400: {"description": CommonMessages.BAD_REQUEST},
         401: {"description": CommonMessages.UNAUTHORIZED},
+        403: {"description": CommonMessages.FORBIDDEN},
         404: {"description": CommonMessages.NOT_FOUND},
     },
 )
 def list_users(
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_owner),
     db: Session = Depends(get_db),
 ):
     user_list = UserService.get_users(db, current_user)
@@ -102,13 +104,14 @@ def list_users(
         },
         400: {"description": CommonMessages.BAD_REQUEST},
         401: {"description": CommonMessages.UNAUTHORIZED},
+        403: {"description": CommonMessages.FORBIDDEN},
         404: {"description": CommonMessages.NOT_FOUND},
         422: {"description": CommonMessages.UNPROCESSABLE_ENTITY},
     },
 )
 def get_by_id(
     id: int = Path(..., ge=1, le=2_147_483_647),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_owner),
     db: Session = Depends(get_db),
 ):
     user = UserService.get_user_by_id(db, id, current_user)
@@ -136,6 +139,7 @@ def get_by_id(
         },
         400: {"description": CommonMessages.BAD_REQUEST},
         401: {"description": CommonMessages.UNAUTHORIZED},
+        403: {"description": CommonMessages.FORBIDDEN},
         404: {"description": CommonMessages.NOT_FOUND},
         422: {"description": CommonMessages.UNPROCESSABLE_ENTITY},
     },
@@ -143,7 +147,7 @@ def get_by_id(
 def patch_user(
     id: int = Path(..., ge=1, le=2_147_483_647),
     data: UserActive = ...,
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_owner),
     db: Session = Depends(get_db),
 ):
     updated_user = UserService.activate_user(

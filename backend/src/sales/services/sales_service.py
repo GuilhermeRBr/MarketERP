@@ -8,7 +8,6 @@ from src.sales.models.sales_model import (
 )
 from src.sales.schemas.sales_schema import SaleCreate
 from src.sales.messages.sales_messages import SalesMessages
-from src.user.messages.user_message import USER_MESSAGES
 from src.user.models.user_model import User
 
 
@@ -84,12 +83,6 @@ class SalesService:
 
     @staticmethod
     def get_sales(db: Session, current_user: User):
-        if current_user.role != "OWNER":
-            raise HTTPException(
-                status_code=401,
-                detail=USER_MESSAGES.UNAUTHORIZED,
-            )
-
         sales = db.query(Sale).all()
         return sales
 

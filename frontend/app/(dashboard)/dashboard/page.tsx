@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useProducts } from "@/hooks/useProducts";
 import { useSales } from "@/hooks/useSales";
 import { useUsers } from "@/hooks/useUsers";
@@ -23,8 +25,16 @@ import {
 import { useMemo } from "react";
 
 export default function DashboardPage() {
-  const { user } = useAuth();
+  const { user, isLoading: authLoading } = useAuth();
+  const router = useRouter();
   const isOwner = user?.role?.toUpperCase() === "OWNER";
+
+  // Redirecionar operators para o caixa
+  useEffect(() => {
+    if (!authLoading && user && !isOwner) {
+      router.replace("/caixa");
+    }
+  }, [authLoading, user, isOwner, router]);
 
   const { data: products, isLoading: loadingProducts } = useProducts();
   const { data: sales, isLoading: loadingSales } = useSales();
@@ -164,6 +174,15 @@ export default function DashboardPage() {
   }, [products, sales, users, isOwner]);
 
   const isLoading = loadingProducts || loadingSales || (isOwner && loadingUsers);
+
+  // Não renderizar nada enquanto verifica permissão ou redireciona
+  if (authLoading || !isOwner) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loader2 className="w-12 h-12 text-blue-600 animate-spin" />
+      </div>
+    );
+  }
 
   if (isLoading) {
     return (
