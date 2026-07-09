@@ -29,7 +29,7 @@ const menuItems = [
     name: "Dashboard",
     href: "/dashboard",
     icon: LayoutDashboard,
-    ownerOnly: false,
+    ownerOnly: true,
   },
   {
     name: "Produtos",
@@ -41,7 +41,7 @@ const menuItems = [
     name: "Vendas",
     href: "/vendas",
     icon: ShoppingCart,
-    ownerOnly: false,
+    ownerOnly: true,
   },
   {
     name: "Usuários",
