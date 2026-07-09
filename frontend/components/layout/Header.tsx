@@ -7,7 +7,7 @@ export default function Header() {
   const { user } = useAuth();
 
   const getRoleLabel = (role: string) => {
-    return role === "owner" ? "Dono" : "Funcionário";
+    return role.toUpperCase() === "OWNER" ? "Dono" : "Funcionário";
   };
 
   return (
