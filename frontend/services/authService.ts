@@ -105,7 +105,7 @@ class AuthService {
       return {
         id: payload.sub,
         email: payload.email,
-        role: payload.role,
+        role: payload.owner,
         active: true,
       };
     } catch {
