@@ -1,8 +1,11 @@
 "use client";
 
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useProducts } from "@/hooks/useProducts";
 import { useSales } from "@/hooks/useSales";
 import { useUsers } from "@/hooks/useUsers";
+import { useAuth } from "@/contexts/AuthContext";
 import { formatCurrency } from "@/utils/formatters";
 import {
   ShoppingCart,
@@ -22,13 +25,25 @@ import {
 import { useMemo } from "react";
 
 export default function DashboardPage() {
+  const { user, isLoading: authLoading } = useAuth();
+  const router = useRouter();
+  const isOwner = user?.role?.toUpperCase() === "OWNER";
+
+  // Redirecionar operators para o caixa
+  useEffect(() => {
+    if (!authLoading && user && !isOwner) {
+      router.replace("/caixa");
+    }
+  }, [authLoading, user, isOwner, router]);
+
   const { data: products, isLoading: loadingProducts } = useProducts();
   const { data: sales, isLoading: loadingSales } = useSales();
-  const { data: users, isLoading: loadingUsers } = useUsers();
+  // Apenas owners podem listar usuários — operators receberiam 401
+  const { data: users, isLoading: loadingUsers } = useUsers({ enabled: isOwner });
 
   // Calcular estatísticas
   const stats = useMemo(() => {
-    if (!products || !sales || !users) {
+    if (!products || !sales || (isOwner && !users)) {
       return {
         // Financeiro
         totalRevenue: 0,
@@ -150,15 +165,24 @@ export default function DashboardPage() {
       totalStockValue,
       
       // Usuários
-      totalUsers: users.length,
-      activeUsers: users.filter((u) => u.active).length,
+      totalUsers: users?.length ?? 0,
+      activeUsers: users?.filter((u) => u.active).length ?? 0,
       
       // Top produtos
       topProducts,
     };
-  }, [products, sales, users]);
+  }, [products, sales, users, isOwner]);
 
-  const isLoading = loadingProducts || loadingSales || loadingUsers;
+  const isLoading = loadingProducts || loadingSales || (isOwner && loadingUsers);
+
+  // Não renderizar nada enquanto verifica permissão ou redireciona
+  if (authLoading || !isOwner) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loader2 className="w-12 h-12 text-blue-600 animate-spin" />
+      </div>
+    );
+  }
 
   if (isLoading) {
     return (
@@ -302,7 +326,8 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Usuários */}
+        {/* Usuários — apenas visível para owners */}
+        {isOwner && (
         <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
           <div className="flex items-center gap-3 mb-4">
             <div className="p-3 bg-purple-100 rounded-lg">
@@ -330,6 +355,7 @@ export default function DashboardPage() {
             </div>
           </div>
         </div>
+        )}
 
         {/* Status de Vendas */}
         <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">

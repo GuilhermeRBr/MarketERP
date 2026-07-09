@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, status, Path
 from sqlalchemy.orm import Session
-from src.core.dependency import get_current_user
+from src.core.dependency import get_current_user, require_owner
 from src.data.database import get_db
 from src.sales.schemas.sales_schema import SaleCreate
 from src.sales.services.sales_service import SalesService
@@ -66,11 +66,12 @@ def create_sale(
         },
         400: {"description": CommonMessages.BAD_REQUEST},
         401: {"description": CommonMessages.UNAUTHORIZED},
+        403: {"description": CommonMessages.FORBIDDEN},
         404: {"description": CommonMessages.NOT_FOUND},
     },
 )
 def list_sales(
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_owner),
     db: Session = Depends(get_db),
 ):
     return SalesService.get_sales(db, current_user)

@@ -15,12 +15,6 @@ class UserService:
     def create_new_user(
         db: Session, data: UserCreate, current_user: User
     ):
-        if current_user.role != "OWNER":
-            raise HTTPException(
-                status_code=401,
-                detail=USER_MESSAGES.UNAUTHORIZED,
-            )
-
         if db.query(User).filter(User.email == data.email).first():
             raise HTTPException(
                 status_code=409,
@@ -44,12 +38,6 @@ class UserService:
 
     @staticmethod
     def get_users(db: Session, current_user: User):
-        if current_user.role != "OWNER":
-            raise HTTPException(
-                status_code=401,
-                detail=USER_MESSAGES.UNAUTHORIZED,
-            )
-
         users = db.query(User).all()
 
         if not users:
@@ -62,12 +50,6 @@ class UserService:
 
     @staticmethod
     def get_user_by_id(db: Session, user_id: int, current_user: User):
-        if current_user.role != "OWNER":
-            raise HTTPException(
-                status_code=401,
-                detail=USER_MESSAGES.UNAUTHORIZED,
-            )
-
         user = db.query(User).filter(User.id == user_id).first()
 
         if not user:
@@ -85,12 +67,6 @@ class UserService:
         data: UserActive,
         current_user: User,
     ):
-        if current_user.role != "OWNER":
-            raise HTTPException(
-                status_code=401,
-                detail=USER_MESSAGES.UNAUTHORIZED,
-            )
-
         user = db.query(User).filter(User.id == user_id).first()
 
         if not user:
