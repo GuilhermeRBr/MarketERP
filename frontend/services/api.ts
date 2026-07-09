@@ -40,10 +40,29 @@ api.interceptors.response.use(
 
     // Se erro 401 (não autorizado) e não é retry
     if (error.response?.status === 401 && !originalRequest._retry) {
+      // Verificar se é realmente um token inválido/expirado ou apenas falta de permissão.
+      // Se a requisição não tem token (sem Authorization header), não tentar refresh.
+      const hasAuthHeader = originalRequest.headers?.Authorization;
+      if (!hasAuthHeader) {
+        return Promise.reject(error);
+      }
+
+      // Verificar se o erro é de token inválido (não de permissão insuficiente).
+      // Erros de permissão (UNAUTHORIZED por role) não devem disparar o refresh.
+      const errorDetail = (error.response?.data as { detail?: string })?.detail;
+      const isTokenError =
+        !errorDetail ||
+        errorDetail === "Invalid token" ||
+        errorDetail === "Not authenticated";
+
+      if (!isTokenError) {
+        // Erro de permissão (ex: operador tentando acessar rota de owner) — não redirecionar
+        return Promise.reject(error);
+      }
+
       originalRequest._retry = true;
 
       try {
-        // Tentar refresh token (será implementado no STEP 3)
         if (typeof window !== "undefined") {
           const refreshToken = localStorage.getItem("refresh_token");
           

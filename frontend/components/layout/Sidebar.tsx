@@ -23,34 +23,40 @@ const menuItems = [
     name: "Caixa (PDV)",
     href: "/caixa",
     icon: MonitorPlay,
+    ownerOnly: false,
   },
   {
     name: "Dashboard",
     href: "/dashboard",
     icon: LayoutDashboard,
+    ownerOnly: false,
   },
   {
     name: "Produtos",
     href: "/produtos",
     icon: Package,
+    ownerOnly: false,
   },
   {
     name: "Vendas",
     href: "/vendas",
     icon: ShoppingCart,
+    ownerOnly: false,
   },
   {
     name: "Usuários",
     href: "/usuarios",
     icon: Users,
+    ownerOnly: true,
   },
 ];
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   const { collapsed, toggleCollapsed } = useSidebar();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const isOwner = user?.role?.toUpperCase() === "OWNER";
 
   const handleLogout = () => {
     setIsLogoutModalOpen(true);
@@ -88,7 +94,7 @@ export default function Sidebar() {
       {/* Menu */}
       <nav className="flex-1 p-2 overflow-y-auto">
         <ul className="space-y-1">
-          {menuItems.map((item) => {
+          {menuItems.filter(item => !item.ownerOnly || isOwner).map((item) => {
             const Icon = item.icon;
             const isActive =
               pathname === item.href || pathname.startsWith(item.href + "/");

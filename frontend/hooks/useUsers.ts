@@ -15,10 +15,11 @@ export const userKeys = {
 };
 
 // Hook para listar todos os usuários
-export function useUsers() {
+export function useUsers(options?: { enabled?: boolean }) {
   return useQuery({
     queryKey: userKeys.lists(),
     queryFn: () => userService.getAll(),
+    enabled: options?.enabled !== false,
   });
 }
 
