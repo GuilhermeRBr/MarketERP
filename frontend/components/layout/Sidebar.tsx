@@ -59,7 +59,7 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="w-64 bg-gray-900 text-white min-h-screen flex flex-col">
+    <aside className="w-64 bg-gray-900 text-white h-screen sticky top-0 flex flex-col">
       {/* Logo */}
       <div className="p-6 border-b border-gray-800">
         <Logo width={160} marketColor="#ffffff" />
@@ -67,7 +67,7 @@ export default function Sidebar() {
       </div>
 
       {/* Menu */}
-      <nav className="flex-1 p-4">
+      <nav className="flex-1 p-4 overflow-y-auto">
         <ul className="space-y-2">
           {menuItems.map((item) => {
             const Icon = item.icon;
