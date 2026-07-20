@@ -1,7 +1,7 @@
 <div align="center">
   <img src="./frontend/public/icons/Logo.svg" width="400" alt="MarketERP Logo" />
   <p align="center">
-    <strong>MercadinhoGR é uma plataforma open-source para gerenciamento de mercado/ERP, desenvolvida para controle de produtos, vendas, usuários e pagamentos com Next.js, React, TypeScript e Tailwind CSS.</strong><br />
+    <strong>MarketERP é uma plataforma open-source para gerenciamento de mercado/ERP, desenvolvida para controle de produtos, vendas, usuários e pagamentos com Next.js, React, TypeScript e Tailwind CSS.</strong><br />
     Backend feito com FastAPI + Python + PostgreSQL
   </p>
 
