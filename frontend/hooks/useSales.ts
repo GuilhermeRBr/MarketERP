@@ -1,6 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { saleService } from "@/services/saleService";
 import { CreateSaleDTO } from "@/types/Sale";
+import { productKeys } from "@/hooks/useProducts";
+import { analyticsKeys } from "@/hooks/useAnalytics";
 
 // Query keys
 export const saleKeys = {
@@ -34,7 +36,10 @@ export function useCreateSale() {
   return useMutation({
     mutationFn: (data: CreateSaleDTO) => saleService.create(data),
     onSuccess: () => {
+      // Invalida vendas, produtos (estoque diminuiu) e analytics
       queryClient.invalidateQueries({ queryKey: saleKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: productKeys.all });
+      queryClient.invalidateQueries({ queryKey: analyticsKeys.all });
     },
   });
 }
@@ -46,8 +51,11 @@ export function useCancelSale() {
   return useMutation({
     mutationFn: (id: number) => saleService.cancel(id),
     onSuccess: (_, id) => {
+      // Invalida vendas, produtos (estoque devolvido) e analytics
       queryClient.invalidateQueries({ queryKey: saleKeys.detail(id) });
       queryClient.invalidateQueries({ queryKey: saleKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: productKeys.all });
+      queryClient.invalidateQueries({ queryKey: analyticsKeys.all });
     },
   });
 }
