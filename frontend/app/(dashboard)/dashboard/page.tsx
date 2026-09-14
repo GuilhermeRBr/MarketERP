@@ -478,23 +478,7 @@ export default function DashboardPage() {
       {/* Análise Inteligente de Estoque */}
       <AnalyticsInsights />
 
-      {/* Footer Info */}
-      <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 p-6 rounded-xl">
-        <div className="flex items-start gap-4">
-          <div className="p-3 bg-blue-600 rounded-lg">
-            <CheckCircle className="w-6 h-6 text-white" />
-          </div>
-          <div>
-            <h4 className="font-semibold text-gray-900 mb-1">
-              Sistema Completo e Operacional
-            </h4>
-            <p className="text-sm text-gray-600">
-              Todos os módulos estão funcionando: Autenticação, Produtos, Usuários, 
-              Vendas, Pagamentos e Dashboard. O sistema está pronto para uso!
-            </p>
-          </div>
-        </div>
-      </div>
+
     </div>
   );
 }
