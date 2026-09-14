@@ -7,6 +7,7 @@ import { useSales } from "@/hooks/useSales";
 import { useUsers } from "@/hooks/useUsers";
 import { useAuth } from "@/contexts/AuthContext";
 import { formatCurrency } from "@/utils/formatters";
+import AnalyticsInsights from "@/components/dashboard/AnalyticsInsights";
 import {
   ShoppingCart,
   Package,
@@ -473,6 +474,9 @@ export default function DashboardPage() {
           )}
         </div>
       </div>
+
+      {/* Análise Inteligente de Estoque */}
+      <AnalyticsInsights />
 
       {/* Footer Info */}
       <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 p-6 rounded-xl">
