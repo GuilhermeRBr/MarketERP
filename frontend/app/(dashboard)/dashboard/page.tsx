@@ -8,6 +8,7 @@ import { useUsers } from "@/hooks/useUsers";
 import { useAuth } from "@/contexts/AuthContext";
 import { formatCurrency } from "@/utils/formatters";
 import AnalyticsInsights from "@/components/dashboard/AnalyticsInsights";
+import SalesCharts from "@/components/dashboard/SalesCharts";
 import {
   ShoppingCart,
   Package,
@@ -211,6 +212,9 @@ export default function DashboardPage() {
           })}</span>
         </div>
       </div>
+
+      {/* Gráficos com seletor de range */}
+      <SalesCharts />
 
       {/* Cards Principais - Métricas Financeiras */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

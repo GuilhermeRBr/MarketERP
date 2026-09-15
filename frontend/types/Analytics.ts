@@ -22,3 +22,27 @@ export interface Analytics {
   top_selling: TopSellingProduct[];
   analysis_period_days: number;
 }
+
+// --- Charts ---
+
+export type ChartRange = "1d" | "7d" | "30d" | "90d" | "1y" | "all";
+
+export interface RevenueDataPoint {
+  date: string;
+  revenue: number;
+  sales_count: number;
+}
+
+export interface TopProductChartItem {
+  product_name: string;
+  total_quantity_sold: number;
+  total_revenue: number;
+}
+
+export interface ChartsData {
+  revenue_over_time: RevenueDataPoint[];
+  top_products: TopProductChartItem[];
+  total_revenue: number;
+  total_sales: number;
+  period_label: string;
+}
