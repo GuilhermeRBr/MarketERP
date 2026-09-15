@@ -9,6 +9,7 @@ from src.sales.routes.sales_route import router as sales_router
 from src.user.routes.user_route import router as user_router
 from src.login.routes.login_route import router as login_router
 from src.payments.routes.payments_route import router as payments_router
+from src.analytics.routes.analytics_route import router as analytics_router
 from src.seed.seed_admin import seed_admin
 from src.data.database import SessionLocal
 
@@ -40,6 +41,7 @@ app.include_router(sales_router, prefix=API_PREFIX)
 app.include_router(user_router, prefix=API_PREFIX)
 app.include_router(login_router, prefix=API_PREFIX)
 app.include_router(payments_router, prefix=API_PREFIX)
+app.include_router(analytics_router, prefix=API_PREFIX)
 
 
 @app.on_event("startup")

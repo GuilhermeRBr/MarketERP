@@ -7,6 +7,8 @@ import { useSales } from "@/hooks/useSales";
 import { useUsers } from "@/hooks/useUsers";
 import { useAuth } from "@/contexts/AuthContext";
 import { formatCurrency } from "@/utils/formatters";
+import AnalyticsInsights from "@/components/dashboard/AnalyticsInsights";
+import SalesCharts from "@/components/dashboard/SalesCharts";
 import {
   ShoppingCart,
   Package,
@@ -210,6 +212,9 @@ export default function DashboardPage() {
           })}</span>
         </div>
       </div>
+
+      {/* Gráficos com seletor de range */}
+      <SalesCharts />
 
       {/* Cards Principais - Métricas Financeiras */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -474,23 +479,10 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Footer Info */}
-      <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 p-6 rounded-xl">
-        <div className="flex items-start gap-4">
-          <div className="p-3 bg-blue-600 rounded-lg">
-            <CheckCircle className="w-6 h-6 text-white" />
-          </div>
-          <div>
-            <h4 className="font-semibold text-gray-900 mb-1">
-              Sistema Completo e Operacional
-            </h4>
-            <p className="text-sm text-gray-600">
-              Todos os módulos estão funcionando: Autenticação, Produtos, Usuários, 
-              Vendas, Pagamentos e Dashboard. O sistema está pronto para uso!
-            </p>
-          </div>
-        </div>
-      </div>
+      {/* Análise Inteligente de Estoque */}
+      <AnalyticsInsights />
+
+
     </div>
   );
 }
